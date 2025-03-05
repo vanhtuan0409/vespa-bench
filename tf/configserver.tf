@@ -58,3 +58,7 @@ resource "null_resource" "deploy-configserver" {
 output "configserver_ips" {
   value = aws_instance.configserver[*].private_ip
 }
+
+output "configserver_dnses" {
+  value = aws_instance.configserver[*].private_dns
+}

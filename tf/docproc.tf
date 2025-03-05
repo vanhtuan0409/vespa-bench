@@ -58,3 +58,7 @@ resource "null_resource" "deploy-docproc" {
 output "docproc_ips" {
   value = aws_instance.docproc[*].private_ip
 }
+
+output "docproc_dnses" {
+  value = aws_instance.docproc[*].private_dns
+}

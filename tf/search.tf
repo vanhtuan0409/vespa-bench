@@ -58,3 +58,7 @@ resource "null_resource" "deploy-search" {
 output "search_ips" {
   value = aws_instance.search[*].private_ip
 }
+
+output "search_dnses" {
+  value = aws_instance.search[*].private_dns
+}

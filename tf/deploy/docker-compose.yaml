@@ -9,3 +9,28 @@ services:
     volumes:
       - /data/vespa/logs:/opt/vespa/logs
       - /data/vespa/var:/opt/vespa/var
+    ulimits:
+      nproc:
+        soft: 32768
+        hard: 409600
+      stack:
+        soft: 8388608
+        hard: 16777216
+      nofile:
+        soft: 32768
+        hard: 262144
+
+  node-exporter:
+    container_name: node-exporter
+    image: prom/node-exporter:v1.9.0
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100

@@ -58,3 +58,7 @@ resource "null_resource" "deploy-content" {
 output "content_ips" {
   value = aws_instance.content[*].private_ip
 }
+
+output "content_dnses" {
+  value = aws_instance.content[*].private_dns
+}
