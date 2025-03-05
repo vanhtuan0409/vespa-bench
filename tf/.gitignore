@@ -1,0 +1,3 @@
+data.tf
+.terraform/
+terraform.tfstate*

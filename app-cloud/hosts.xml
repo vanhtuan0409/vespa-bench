@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hosts>
+  <host name="ip-172-20-0-249.ec2.internal">
+    <alias>vespa-config</alias>
+  </host>
+  <host name="ip-172-20-0-154.ec2.internal">
+    <alias>vespa-docproc</alias>
+    <alias>vespa-content</alias>
+    <alias>vespa-search</alias>
+  </host>
+</hosts>

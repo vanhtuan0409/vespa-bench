@@ -1,0 +1,11 @@
+services:
+  vespa:
+    container_name: vespa
+    image: vespaengine/vespa:8.490.20
+    command: ${command}
+    network_mode: host
+    environment:
+      VESPA_CONFIGSERVERS: ${config_servers}
+    volumes:
+      - /data/vespa/logs:/opt/vespa/logs
+      - /data/vespa/var:/opt/vespa/var

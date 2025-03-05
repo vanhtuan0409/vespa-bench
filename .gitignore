@@ -1,5 +1,4 @@
 target/
-app/components/
+**/components/
 ext/full.jsonl
 ext/queries.txt
-tf/data.tf
