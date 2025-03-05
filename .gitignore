@@ -1,0 +1,4 @@
+target/
+app/components/
+ext/full.jsonl
+ext/queries.txt

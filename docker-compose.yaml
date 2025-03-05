@@ -1,0 +1,23 @@
+x-common: &common
+  image: vespaengine/vespa:latest
+  environment:
+    - VESPA_CONFIGSERVERS=vespa-config.vespanet
+    - VESPA_USER=vespa
+
+services:
+  vespa-config:
+    <<: *common
+    container_name: vespa-config
+    hostname: vespa-config.vespanet
+    healthcheck:
+      test: curl http://localhost:19071/state/v1/health
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - ./:/app
+
+networks:
+  vespanet:
+    driver: bridge
+    name: vespanet

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Vespa.ai. All rights reserved. -->
+<services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
+
+<admin version="2.0">
+  <configservers>
+    <configserver hostalias="vespa-config" />
+  </configservers>
+  <cluster-controllers>
+    <cluster-controller hostalias="vespa-config" />
+  </cluster-controllers>
+  <adminserver hostalias="vespa-config"/>
+</admin>
+
+<container id="default" version="1.0">
+  <search/>
+  <document-api/>
+  <document-processing>
+    <chain id="embedding-generator" inherits="indexing">
+      <documentprocessor id="com.anduin.vespa.EmbeddingGenerator" bundle="embedding-generator"/>
+    </chain>
+  </document-processing>
+  <nodes>
+    <node hostalias='vespa-config'/>
+  </nodes>
+</container>
+
+<content id="doc" version="1.0">
+  <redundancy>1</redundancy>
+  <documents>
+    <document mode="streaming" type="doc"/>
+    <document-processing cluster="default" chain="embedding-generator"/>
+  </documents>
+  <nodes>
+    <node hostalias="vespa-config" distribution-key="0" />
+  </nodes>
+  <engine>
+    <proton>
+      <tuning>
+        <searchnode>
+          <summary>
+            <io>
+              <read>directio</read>
+            </io>
+          </summary>
+        </searchnode>
+      </tuning>
+    </proton>
+  </engine>
+</content>
+
+</services>

@@ -1,0 +1,26 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema doc {
+  document doc {
+    field id type long {
+      indexing: summary
+    }
+    field embedding type tensor<bfloat16>(x[256]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: dotproduct
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(qemb) tensor<bfloat16>(x[256])
+    }
+    first-phase {
+      expression: closeness(field,embedding)
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}
