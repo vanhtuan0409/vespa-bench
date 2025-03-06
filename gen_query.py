@@ -1,8 +1,16 @@
 # Copyright Vespa.ai. All rights reserved.
 
-import argparse as ap
+from pathlib import Path
 import random
+from typing import IO
 import urllib.parse
+
+WHALE_ID = 3_000
+NUM_DATAROOM = 2_000
+VECTOR_DIMENSION = 256
+
+NUM_QUERY = 10
+NUM_TARGET_HITS = 10
 
 
 def random_vector(dimension):
@@ -21,19 +29,40 @@ def get_query(target_hits, dimension, dataroom_id):
     return "/search/?" + urllib.parse.urlencode(params)
 
 
-def gen_queries(args):
-    dataroom_id_range = 2_000  # Must match the same definition in gen_docs.py
-    dataroom_ids = list(range(1, dataroom_id_range))
+def all_dataroom_ids():
+    dataroom_ids = list(range(1, NUM_DATAROOM))
     random.shuffle(dataroom_ids)
-    for user_id in dataroom_ids[: args.queries]:
-        print(get_query(args.targethits, args.dimension, user_id))
+    return dataroom_ids
 
 
-parser = ap.ArgumentParser()
-parser.add_argument("-d", "--dimension", type=int, default=256)
-parser.add_argument("-t", "--targethits", type=int, default=10)
-parser.add_argument("-q", "--queries", type=int, default=10)
-parser.add_argument("-s", "--seed", type=int, default=1234)
-args = parser.parse_args()
-random.seed(args.seed)
-gen_queries(args)
+DATAROOM_IDS = all_dataroom_ids()
+
+
+def gen_small_only(f: IO):
+    for dataroom_id in DATAROOM_IDS[:NUM_QUERY]:
+        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, dataroom_id) + "\n")
+
+
+def gen_whale_only(f: IO):
+    for _idx in range(0, NUM_QUERY):
+        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, WHALE_ID))
+
+
+def gen_mixed(f: IO):
+    small_count = int(NUM_QUERY * 0.8)
+    for dataroom_id in DATAROOM_IDS[:small_count]:
+        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, dataroom_id) + "\n")
+
+    whale_count = NUM_QUERY - small_count
+    for _idx in range(0, whale_count):
+        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, WHALE_ID))
+
+
+if __name__ == "__main__":
+    ext_dir = Path(".") / "ext"
+    with open(ext_dir / "query_smalls.txt", "w") as f:
+        gen_small_only(f)
+    with open(ext_dir / "query_whale.txt", "w") as f:
+        gen_whale_only(f)
+    with open(ext_dir / "query_mixed.txt", "w") as f:
+        gen_mixed(f)

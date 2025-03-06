@@ -5,7 +5,7 @@ locals {
 resource "aws_instance" "content" {
   count = local.content_count
 
-  instance_type = "i8g.xlarge"
+  instance_type = "c7gd.2xlarge"
   ami           = local.arm_ami
   key_name      = local.ssh_key
   subnet_id     = data.aws_subnet.this.id
@@ -14,6 +14,13 @@ resource "aws_instance" "content" {
     data.aws_security_group.default.id,
     data.aws_security_group.ssh.id,
   ]
+
+  root_block_device {
+    delete_on_termination = true
+    volume_type           = "gp3"
+    volume_size           = 100
+  }
+
   tags = {
     "Name"        = "vespa-content"
     "DisplayName" = "vespa-content"
@@ -24,6 +31,10 @@ resource "aws_instance" "content" {
 
 resource "null_resource" "deploy-content" {
   count = local.content_count
+
+  lifecycle {
+    replace_triggered_by = [aws_instance.content[count.index].private_ip]
+  }
 
   connection {
     type = "ssh"
@@ -53,7 +64,13 @@ resource "null_resource" "deploy-content" {
     destination = local.deploy_docker
   }
 
-  depends_on = [aws_instance.content]
+  provisioner "remote-exec" {
+    inline = [
+      "docker-compose -f ${local.deploy_docker} up -d"
+    ]
+  }
+
+  depends_on = [aws_instance.content, null_resource.deploy-configserver]
 }
 
 output "content_ips" {

@@ -16,7 +16,12 @@ echo "Setting up deploy directory"
 mkdir -p /opt/anduin
 chown -R ec2-user:ec2-user /opt/anduin
 
+echo "Setting external ebs"
 INSTANCE_STORE_DEV="/dev/nvme1n1"
+while [ ! -e $INSTANCE_STORE_DEV ]; do
+  echo "Waiting for $INSTANCE_STORE_DEV to be attached..."
+  sleep 3
+done
 if fdisk -l | grep $INSTANCE_STORE_DEV; then
   mkfs -t xfs "$INSTANCE_STORE_DEV"
   UUID=$(blkid -s UUID -o value $INSTANCE_STORE_DEV)

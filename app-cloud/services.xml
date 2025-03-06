@@ -4,12 +4,12 @@
 
 <admin version="2.0">
   <configservers>
-    <configserver hostalias="vespa-config" />
+    <configserver hostalias="vespa-config0" />
   </configservers>
   <cluster-controllers>
-    <cluster-controller hostalias="vespa-config" />
+    <cluster-controller hostalias="vespa-config0" />
   </cluster-controllers>
-  <adminserver hostalias="vespa-config"/>
+  <adminserver hostalias="vespa-config0"/>
 </admin>
 
 <container id="default" version="1.0">
@@ -28,7 +28,7 @@
     </chain>
   </document-processing>
   <nodes>
-    <node hostalias='vespa-docproc'/>
+    <node hostalias='vespa-docproc0'/>
   </nodes>
 </container>
 

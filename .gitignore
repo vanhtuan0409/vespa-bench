@@ -1,4 +1,3 @@
 target/
 **/components/
-ext/full.jsonl
-ext/queries.txt
+ext/
