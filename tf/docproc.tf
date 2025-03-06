@@ -18,6 +18,7 @@ resource "aws_instance" "docproc" {
     "Name"        = "vespa-docproc"
     "DisplayName" = "vespa-docproc"
     "Group"       = "vespa"
+    "Role"        = "docproc"
   }
 }
 

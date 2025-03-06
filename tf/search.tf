@@ -18,6 +18,7 @@ resource "aws_instance" "search" {
     "Name"        = "vespa-search"
     "DisplayName" = "vespa-search"
     "Group"       = "vespa"
+    "Role"        = "search"
   }
 }
 

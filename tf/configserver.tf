@@ -18,6 +18,7 @@ resource "aws_instance" "configserver" {
     "Name"        = "vespa-configserver"
     "DisplayName" = "vespa-configserver"
     "Group"       = "vespa"
+    "Role"        = "configserver"
   }
 }
 

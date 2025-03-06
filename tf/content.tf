@@ -18,6 +18,7 @@ resource "aws_instance" "content" {
     "Name"        = "vespa-content"
     "DisplayName" = "vespa-content"
     "Group"       = "vespa"
+    "Role"        = "content"
   }
 }
 

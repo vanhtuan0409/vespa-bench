@@ -22,7 +22,7 @@ def get_query(target_hits, dimension, dataroom_id):
 
 
 def gen_queries(args):
-    dataroom_id_range = 900  # Must match the same definition in gen_docs.py
+    dataroom_id_range = 2_000  # Must match the same definition in gen_docs.py
     dataroom_ids = list(range(1, dataroom_id_range))
     random.shuffle(dataroom_ids)
     for user_id in dataroom_ids[: args.queries]:

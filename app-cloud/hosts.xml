@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <hosts>
-  <host name="ip-172-20-0-249.ec2.internal">
+  <host name="ip-172-20-0-36.ec2.internal">
     <alias>vespa-config</alias>
   </host>
-  <host name="ip-172-20-0-154.ec2.internal">
+
+  <host name="ip-172-20-0-70.ec2.internal">
+    <alias>vespa-content0</alias>
+  </host>
+  <host name="ip-172-20-0-21.ec2.internal">
+    <alias>vespa-content1</alias>
+  </host>
+  <host name="ip-172-20-0-211.ec2.internal">
+    <alias>vespa-content2</alias>
+  </host>
+
+  <host name="ip-172-20-0-89.ec2.internal">
     <alias>vespa-docproc</alias>
-    <alias>vespa-content</alias>
-    <alias>vespa-search</alias>
+  </host>
+
+  <host name="ip-172-20-0-7.ec2.internal">
+    <alias>vespa-search0</alias>
+  </host>
+  <host name="ip-172-20-0-221.ec2.internal">
+    <alias>vespa-search1</alias>
   </host>
 </hosts>

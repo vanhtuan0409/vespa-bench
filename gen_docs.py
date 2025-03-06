@@ -3,8 +3,8 @@ def gen_put(dataroom: int, id: int):
     return f'{{"put": "id:default:doc:g={dataroom_id}:{id}", "fields": {{"id": {id}}}}}'
 
 
-NUM_DATAROOM = 1_000
-NUM_DOC_PER_DATAROOM = 10_000
+NUM_DATAROOM = 2_000
+NUM_DOC_PER_DATAROOM = 9_000
 
 if __name__ == "__main__":
     for dataroom in range(0, NUM_DATAROOM):

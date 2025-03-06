@@ -16,7 +16,8 @@
   <search/>
   <document-api/>
   <nodes>
-    <node hostalias='vespa-search'/>
+    <node hostalias='vespa-search0'/>
+    <node hostalias='vespa-search1'/>
   </nodes>
 </container>
 
@@ -32,13 +33,15 @@
 </container>
 
 <content id="doc" version="1.0">
-  <redundancy>1</redundancy>
+  <redundancy>2</redundancy>
   <documents>
     <document mode="streaming" type="doc"/>
     <document-processing cluster="generator" chain="embedding-generator"/>
   </documents>
   <nodes>
-    <node hostalias="vespa-content" distribution-key="0" />
+    <node hostalias="vespa-content0" distribution-key="0" />
+    <node hostalias="vespa-content1" distribution-key="1" />
+    <node hostalias="vespa-content2" distribution-key="2" />
   </nodes>
   <engine>
     <proton>
