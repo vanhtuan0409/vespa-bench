@@ -17,18 +17,17 @@ resource "aws_instance" "configserver" {
   tags = {
     "Name"        = "vespa-configserver"
     "DisplayName" = "vespa-configserver"
+    "Group"       = "vespa"
   }
 }
 
 resource "null_resource" "deploy-configserver" {
-  for_each = {
-    for idx, instance in aws_instance.configserver[*] : "${idx}" => instance
-  }
+  count = local.configserver_count
 
   connection {
     type = "ssh"
     user = "ec2-user"
-    host = each.value.private_ip
+    host = aws_instance.configserver[count.index].private_ip
   }
 
   provisioner "remote-exec" {

@@ -1,3 +1,4 @@
 data.tf
 .terraform/
 terraform.tfstate*
+.terraform.tfstate.lock.info

@@ -17,18 +17,17 @@ resource "aws_instance" "content" {
   tags = {
     "Name"        = "vespa-content"
     "DisplayName" = "vespa-content"
+    "Group"       = "vespa"
   }
 }
 
 resource "null_resource" "deploy-content" {
-  for_each = {
-    for idx, instance in aws_instance.content[*] : "${idx}" => instance
-  }
+  count = local.content_count
 
   connection {
     type = "ssh"
     user = "ec2-user"
-    host = each.value.private_ip
+    host = aws_instance.content[count.index].private_ip
   }
 
   provisioner "remote-exec" {

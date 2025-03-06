@@ -17,18 +17,17 @@ resource "aws_instance" "search" {
   tags = {
     "Name"        = "vespa-search"
     "DisplayName" = "vespa-search"
+    "Group"       = "vespa"
   }
 }
 
 resource "null_resource" "deploy-search" {
-  for_each = {
-    for idx, instance in aws_instance.search[*] : "${idx}" => instance
-  }
+  count = local.search_count
 
   connection {
     type = "ssh"
     user = "ec2-user"
-    host = each.value.private_ip
+    host = aws_instance.search[count.index].private_ip
   }
 
   provisioner "remote-exec" {

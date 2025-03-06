@@ -17,18 +17,17 @@ resource "aws_instance" "docproc" {
   tags = {
     "Name"        = "vespa-docproc"
     "DisplayName" = "vespa-docproc"
+    "Group"       = "vespa"
   }
 }
 
 resource "null_resource" "deploy-docproc" {
-  for_each = {
-    for idx, instance in aws_instance.docproc[*] : "${idx}" => instance
-  }
+  count = local.docproc_count
 
   connection {
     type = "ssh"
     user = "ec2-user"
-    host = each.value.private_ip
+    host = aws_instance.docproc[count.index].private_ip
   }
 
   provisioner "remote-exec" {

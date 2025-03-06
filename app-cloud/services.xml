@@ -47,6 +47,7 @@
           <summary>
             <io>
               <read>directio</read>
+              <write>directio</write>
             </io>
           </summary>
         </searchnode>
