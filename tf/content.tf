@@ -38,6 +38,7 @@ resource "null_resource" "deploy-content" {
   provisioner "remote-exec" {
     inline = [
       "mkdir -p ${local.deploy_dir}",
+      "mkdir -p /opt/anduin/benchmark",
       "mkdir -p ${local.data_dir}/{logs,var}",
       "touch ${local.deploy_docker}",
       "cp ${local.deploy_docker} ${local.deploy_docker}.bak"

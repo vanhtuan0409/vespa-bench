@@ -7,6 +7,7 @@ services:
     environment:
       VESPA_CONFIGSERVERS: ${config_servers}
     volumes:
+      - /opt/anduin/benchmark:/benchmark
       - /data/vespa/logs:/opt/vespa/logs
       - /data/vespa/var:/opt/vespa/var
     ulimits:
