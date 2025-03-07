@@ -7,4 +7,4 @@ docker run --rm -it \
   --entrypoint="" \
   -w /app \
   -v ./app-cloud:/app \
-  vespaengine/vespa vespa deploy -t $https://${configserver_ips}:19071 .
+  vespaengine/vespa vespa deploy -t http://${CONFIG_SERVER_IP}:19071 .

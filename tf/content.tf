@@ -5,7 +5,7 @@ locals {
 resource "aws_instance" "content" {
   count = local.content_count
 
-  instance_type = "c7gd.2xlarge"
+  instance_type = "r7g.xlarge"
   ami           = local.arm_ami
   key_name      = local.ssh_key
   subnet_id     = data.aws_subnet.this.id
@@ -27,6 +27,29 @@ resource "aws_instance" "content" {
     "Group"       = "vespa"
     "Role"        = "content"
   }
+}
+
+resource "aws_ebs_volume" "content" {
+  count = local.content_count
+
+  lifecycle {
+    replace_triggered_by = [aws_instance.content[count.index].private_ip]
+  }
+
+  availability_zone = data.aws_subnet.this.availability_zone
+  size              = 150
+  type              = "gp3"
+
+  tags = {
+    Name = "vespa-content"
+  }
+}
+
+resource "aws_volume_attachment" "content" {
+  count       = local.content_count
+  device_name = "/dev/sdf"
+  volume_id   = aws_ebs_volume.content[count.index].id
+  instance_id = aws_instance.content[count.index].id
 }
 
 resource "null_resource" "deploy-content" {

@@ -17,12 +17,20 @@ def random_vector(dimension):
     return [random.randint(0, 100000) / 100000.0 for _ in range(dimension)]
 
 
+def get_query_no_filter(target_hits, dimension):
+    params = {
+        "yql": f"select * from doc where ({{targetHits:{target_hits}, approximate: true}}nearestNeighbor(embedding,qemb))",
+        "input.query(qemb)": random_vector(dimension),
+        "presentation.summary": "minimal",
+        "hits": target_hits,
+    }
+    return "/search/?" + urllib.parse.urlencode(params)
+
+
 def get_query(target_hits, dimension, dataroom_id):
     params = {
-        "yql": "select * from doc where {targetHits:%s}nearestNeighbor(embedding,qemb)"
-        % target_hits,
+        "yql": f"select * from doc where dataroom_id contains 'dataroom{dataroom_id}' and ({{targetHits:{target_hits}, approximate: true}}nearestNeighbor(embedding,qemb))",
         "input.query(qemb)": random_vector(dimension),
-        "streaming.groupname": "dataroom%i" % dataroom_id,
         "presentation.summary": "minimal",
         "hits": target_hits,
     }
@@ -58,6 +66,11 @@ def gen_mixed(f: IO):
         f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, WHALE_ID) + "\n")
 
 
+def gen_full(f: IO):
+    for _idx in range(0, NUM_QUERY):
+        f.write(get_query_no_filter(NUM_TARGET_HITS, VECTOR_DIMENSION))
+
+
 if __name__ == "__main__":
     ext_dir = Path(".") / "ext"
     with open(ext_dir / "query_smalls.txt", "w") as f:
@@ -66,3 +79,5 @@ if __name__ == "__main__":
         gen_whale_only(f)
     with open(ext_dir / "query_mixed.txt", "w") as f:
         gen_mixed(f)
+    with open(ext_dir / "query_full.txt", "w") as f:
+        gen_full(f)

@@ -5,10 +5,21 @@ schema doc {
     field id type long {
       indexing: attribute | summary
     }
-    field embedding type tensor<bfloat16>(x[256]) {
+    field dataroom_id type string {
       indexing: attribute | summary
+      rank: filter
+      match: exact 
+    }
+    field embedding type tensor<bfloat16>(x[256]) {
+      indexing: attribute | summary | index
       attribute {
         distance-metric: dotproduct
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 100
+        }
       }
     }
   }
@@ -22,5 +33,6 @@ schema doc {
   }
   document-summary minimal {
     summary id {}
+    summary dataroom_id {}
   }
 }
