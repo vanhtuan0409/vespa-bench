@@ -45,7 +45,7 @@ def gen_small_only(f: IO):
 
 def gen_whale_only(f: IO):
     for _idx in range(0, NUM_QUERY):
-        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, WHALE_ID))
+        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, WHALE_ID) + "\n")
 
 
 def gen_mixed(f: IO):
@@ -55,7 +55,7 @@ def gen_mixed(f: IO):
 
     whale_count = NUM_QUERY - small_count
     for _idx in range(0, whale_count):
-        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, WHALE_ID))
+        f.write(get_query(NUM_TARGET_HITS, VECTOR_DIMENSION, WHALE_ID) + "\n")
 
 
 if __name__ == "__main__":
