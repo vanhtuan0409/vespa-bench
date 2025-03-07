@@ -5,8 +5,6 @@ CONFIG_SERVER_IP=$(terraform -chdir="$here/../tf" output -json | jq -r .configse
 
 docker run --rm -it \
   --entrypoint="" \
-  -e "VESPA_CONFIG=$CONFIG_SERVER_IP" \
-  -e "VESPA_ENDPOINT=http://$CONFIG_SERVER_IP:19071" \
   -w /app \
   -v ./app-cloud:/app \
-  vespaengine/vespa bash
+  vespaengine/vespa vespa deploy -t $https://${configserver_ips}:19071 .
